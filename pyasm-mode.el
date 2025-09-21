@@ -23,7 +23,7 @@
 
 ;;; Commentary:
 
-;; This mode derived from `asm-mode' by Erirc Raymond et al.
+;; This mode marginally derived from `asm-mode' by Eric Raymond et al.
 
 ;; It defines a private abbrev table that can be used to save abbrevs
 ;; for assembler mnemonics.  It binds just five keys:
@@ -31,7 +31,7 @@
 ;;	TAB		tab to next tab stop
 ;;	:		outdent preceding label, tab to tab stop
 ;;	comment char	place or move comment
-;;			`asm-comment-char' specifies which character this is;
+;;			`pyasm-comment-char' specifies which character this is;
 ;;			you can use a different character in different
 ;;			Asm mode buffers.
 ;;	C-j, C-m	newline and tab to tab stop
@@ -39,13 +39,24 @@
 ;; Code is indented to the first tab stop level.
 
 ;; This mode runs two hooks:
-;;   1) `asm-mode-set-comment-hook' before the part of the initialization
+;;   1) `pyasm-mode-set-comment-hook' before the part of the initialization
 ;;      depending on `asm-comment-char', and
-;;   2) `asm-mode-hook' at the end of initialization.
+;;   2) `pyasm-mode-hook' at the end of initialization.
 
 ;;; Code:
 
 (require 'font-lock)
+
+;; Attempt at a more complete pyasm coloring
+;; (require 'mmm-mode)
+;; Simpler python code section coloring
+(defface pyasm-python-code-face
+  '((t :inherit font-lock-string-face))
+  "Face for Python code in assembler comments.")
+
+(defface pyasm-section-face
+  '((t :weight bold :foreground "black"))
+  "Face for bold, black, even inside comments.")
 
 (defgroup pyasm nil
   "Mode for editing assembler code."
@@ -371,34 +382,36 @@
       )
 
 (defconst pyasm-font-lock-keywords
-   (list
-     (cons
-      (concat "\\<"
-	      (regexp-opt pyasm-operators t) "\\>")
-      'font-lock-variable-name-face)
+  (list
+   ;; (cons "# Method Name:" 'pyasm-section-face)
 
-     (cons "\\((to [0-9]+)\\)"
-	   'font-lock-function-function-name-face)
+   (cons " \\([0-9]+\\) " 'font-lock-function-name-face)
 
+   ;; Operator names
+   (cons
+    (concat "\\<"
+	    (regexp-opt pyasm-operators t) "\\>")
+    'font-lock-variable-name-face)
 
-     ;; '(1 font-lock-function-name-face) '(3 font-lock-keyword-face nil t))
-   ;; Line number label. A number like:
-   ;;    6:
-    '("^\\sw*\\([0-9]+:\\)"
-      1 font-lock-constant-face)
-    '("^\\((\\sw+)\\)?\\s +\\(\\(\\.?\\sw\\|\\s_\\)+\\(\\.\\sw+\\)*\\)"
-      2 font-lock-keyword-face)
-    '("^\\sw*\\([0-9]+:\\sw*[0-9]+\\)"
-      1 font-lock-constant-face)
-    '("^\\((\\sw+)\\)?\\s +\\(\\(\\.?\\sw\\|\\s_\\)+\\(\\.\\sw+\\)*\\)"
-      1 font-lock-constant-face)
+   ;; Jumps to line number
+   (cons "\\((to [0-9]+)\\)" 'font-lock-doc-face)
 
-     ;; directive started from ".".
-     ;; '("^\\(\\.\\(\\sw\\|\\s_\\)+\\)\\>[^:]?"
-     ;;  1 font-lock-keyword-face)
-     ;; %register
-     ;; '("%\\sw+" . font-lock-variable-name-face)
-     )
+   ;; Labels
+   (cons "\\(L?[0-9]+:\\)" 'font-lock-constant-face)
+
+   ;; Less complete Python coloring
+   (cons ";.*$" 'pyasm-python-code-face)
+
+   ;; '("^\\sw*\\([0-9]+:\\)"
+   ;;   1 font-lock-constant-face)
+   ;; '("^\\((\\sw+)\\)?\\s +\\(\\(\\.?\\sw\\|\\s_\\)+\\(\\.\\sw+\\)*\\)"
+   ;;   2 font-lock-keyword-face)
+   ;; '("^\\sw*\\([0-9]+:\\sw*[0-9]+\\)"
+   ;;   1 font-lock-constant-face)
+   ;; '("^\\((\\sw+)\\)?\\s +\\(\\(\\.?\\sw\\|\\s_\\)+\\(\\.\\sw+\\)*\\)"
+   ;;   1 font-lock-constant-face)
+
+   )
   "Additional expressions to highlight in Python Assembler mode.")
 
 ;;;###autoload
@@ -531,6 +544,23 @@ repeatedly until you are satisfied with the kind of comment."
     (delete-region (point) (line-end-position))
     (beginning-of-line) (insert "\n") (backward-char)
     (pyasm-comment)))))
+
+;; For a python-mode handling. Not working yet.
+;; (mmm-add-classes
+;;  '((pyasm-python-in-comment
+;;     :submode python-mode
+;;     :face mmm-code-submode-face
+;;     :front "^;[ \t]*"
+;;     :include-front t
+;;     :back "$"
+;;     :end-not-begin t
+;;     :match-submode nil ;; always python-mode
+;;     :delimiter-mode nil
+;;     :insert ((?p "Python comment" "; " "" nil)))))
+
+;; (mmm-add-mode-ext-class 'pyasm-mode nil 'pyasm-python-in-comment)
+;; (add-hook 'pyasm-mode-hook 'mmm-mode)
+
 
 (provide 'pyasm-mode)
 
