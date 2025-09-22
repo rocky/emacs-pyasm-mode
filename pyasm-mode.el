@@ -51,7 +51,7 @@
 ;; (require 'mmm-mode)
 ;; Simpler python code section coloring
 (defface pyasm-python-code-face
-  '((t :inherit font-lock-string-face))
+  '((t :inherit font-lock-doc-face))
   "Face for Python code in assembler comments.")
 
 (defface pyasm-section-face
@@ -394,13 +394,13 @@
     'font-lock-variable-name-face)
 
    ;; Jumps to line number
-   (cons "\\((to [0-9]+)\\)" 'font-lock-doc-face)
+   (cons "\\((to [0-9]+)\\)" 'pyasm-python-code-face)
 
    ;; Labels
    (cons "\\(L?[0-9]+:\\)" 'font-lock-constant-face)
 
    ;; Less complete Python coloring
-   (cons ";.*$" 'pyasm-python-code-face)
+   (cons "\\(; .*$\\)" 'font-lock-doc-face)
 
    ;; '("^\\sw*\\([0-9]+:\\)"
    ;;   1 font-lock-constant-face)
