@@ -54,6 +54,10 @@
   '((t :inherit font-lock-doc-face))
   "Face for Python code in assembler comments.")
 
+(defface pyasm-python-bytecode-hex-face
+  '((t :inherit font-lock-type-face))
+  "Face for Python code in hex section in instructions.")
+
 (defface pyasm-section-face
   '((t :weight bold :foreground "black"))
   "Face for bold, black, even inside comments.")
@@ -268,6 +272,7 @@
       "LOAD_METHOD"
       "LOAD_NAME"
       "LOAD_REVDB_VAR"
+      "LOAD_SMALL_INT"
       "LOAD_SUPER_ATTR"
       "LOAD_SUPER_METHOD"
       "LOAD_ZERO_SUPER_ATTR"
@@ -394,10 +399,19 @@
     'font-lock-variable-name-face)
 
    ;; Jumps to line number
-   (cons "\\((to [0-9]+)\\)" 'pyasm-python-code-face)
+   (cons "(to [0-9]+)" 'font-lock-type-face)
 
-   ;; Labels
-   (cons "\\(L?[0-9]+:\\)" 'font-lock-constant-face)
+   ;; Labels at start of line
+   (cons "^\s*L?[0-9]+:" 'font-lock-constant-face)
+
+   ;; Pre 3.6 Operand
+   ;; (cons "|[0-9a-f][0-9a-f] [0-9a-f ][0-9a-f ][0-9a-f ][0-9a-f ][0-9[a-f ]" 'font-lock-type-face)
+   ;; The above doesn't work. The below is close, but misses the first byte of a Pre-3.6 2-byte operand.
+   (cons "|[0-9a-f][0-9a-f]" 'font-lock-type-face)
+   (cons "[0-9a-f][0-9a-f]|" 'font-lock-type-face)
+
+   ;; Label as an operand
+   (cons "L[0-9]+ " 'font-lock-constant-face)
 
    ;; Less complete Python coloring
    (cons "\\(; .*$\\)" 'font-lock-doc-face)
