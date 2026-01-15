@@ -3,8 +3,11 @@
 ;; Copyright (C) 2025-2026 Rocky Bernstein
 
 ;; Author: Rocky Bernstein
+;; Version: 1.0.0
 ;; Maintainer: rocky@gnu.org
 ;; Keywords: languages
+;; URL: https://github.com/rocky/pyasm-mode.el
+;; Compatibility: GNU Emacs 28.x
 
 ;; This file is part of GNU Emacs.
 
@@ -728,7 +731,7 @@
  pyasm-mode
  prog-mode
  "Python Assembler"
- "Major mode for Python pydisasm assembler code.
+ "Major mode for Python dis and pydisasm (from xdis) assembler code.
 Features a private abbrev table and the following bindings:
 
 \\[pyasm-colon]\toutdent a preceding label, tab to next tab stop.
