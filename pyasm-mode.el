@@ -66,7 +66,7 @@
   '((t :weight bold :foreground "black"))
   "Face for bold, black, even inside comments.")
 
-(defgroup pyasm nil
+(defgroup pyasm-mode nil
   "Mode for editing assembler code."
   :link '(custom-group-link :tag "Font Lock Faces group" font-lock-faces)
   :group 'languages)
