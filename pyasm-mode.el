@@ -26,7 +26,8 @@
 
 ;;; Commentary:
 
-;; This mode marginally derived from `asm-mode' by Eric Raymond et al.
+;; Font-lock mode for Python bytecode assembly from Python standard library
+;; dis, or from the pydisasm program of xdis.
 
 ;; It defines a private abbrev table that can be used to save abbrevs
 ;; for assembler mnemonics.  It binds just five keys:
