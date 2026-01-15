@@ -7,7 +7,7 @@
 ;; Maintainer: rocky@gnu.org
 ;; Keywords: languages
 ;; URL: https://github.com/rocky/pyasm-mode.el
-;; Compatibility: GNU Emacs 28.x
+;; Compatibility: GNU Emacs 24.x
 ;; Package-Requires: ((emacs "24.4") (compat "30.1.0.1"))
 
 ;; This file is part of GNU Emacs.
