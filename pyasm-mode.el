@@ -2,22 +2,22 @@
 
 ;; Copyright (C) 2025-2026 Rocky Bernstein
 
-;; Author: Rocky Bernstein
+;; Author: Rocky Bernstein <rocky@gnu.org>
 ;; Version: 1.0.0
 ;; Maintainer: rocky@gnu.org
 ;; Keywords: languages
-;; URL: https://github.com/rocky/pyasm-mode.el
+;; URL: https://github.com/rocky/emacs-pyasm-mode
 ;; Compatibility: GNU Emacs 24.x
 ;; Package-Requires: ((emacs "24.4") (compat "30.1.0.1"))
 
-;; This file is part of GNU Emacs.
+;;; License:
 
-;; GNU Emacs is free software: you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
+;; This file is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License
+;; as published by the Free Software Foundation; either version 3
+;; of the License, or (at your option) any later version.
 
-;; GNU Emacs is distributed in the hope that it will be useful,
+;; This file is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
@@ -66,7 +66,7 @@
   '((t :weight bold :foreground "black"))
   "Face for bold, black, even inside comments.")
 
-(defgroup pyasm-mode nil
+(defgroup pyasm nil
   "Mode for editing assembler code."
   :link '(custom-group-link :tag "Font Lock Faces group" font-lock-faces)
   :group 'languages)
@@ -107,7 +107,7 @@
      comment-region
      :help "Comment or uncomment each line in the region"]))
 
-(setq pyasm-operators
+(defvar pyasm-operators
       '("ASYNC_GEN_WRAP"
         "BEFORE_ASYNC_WITH"
         "BEFORE_WITH"
@@ -397,7 +397,10 @@
         "WITH_CLEANUP_START"
         "WITH_EXCEPT_START"
         "YIELD_FROM"
-        "YIELD_VALUE"))
+        "YIELD_VALUE"
+	)
+      "List of all Python operator names."
+      )
 
 (defconst pyasm-font-lock-keywords
   (list
@@ -546,8 +549,7 @@ repeatedly until you are satisfied with the kind of comment."
         comment)
     (save-excursion
       (beginning-of-line)
-      (with-no-warnings
-        (setq comment (comment-search-forward (line-end-position) t)))
+      (setq comment (comment-search-forward (line-end-position) t)))
       (setq comempty (looking-at "[ \t]*$")))
 
     (cond
