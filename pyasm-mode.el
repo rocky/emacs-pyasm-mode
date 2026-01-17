@@ -446,7 +446,6 @@ Features a private abbrev table and the following bindings:
 \\[pyasm-colon]\toutdent a preceding label, tab to next tab stop.
 \\[tab-to-tab-stop]\ttab to next tab stop.
 \\[newline-and-indent]\tnewline, then tab to next tab stop.
-\\[pyasm-comment]\tsmart placement of assembler comments.
 
 The character used for making comments is set by the variable
 `pyasm-comment-char' (which defaults to `?\\;').
@@ -469,7 +468,6 @@ Special commands:
  ;; Make our own local child of `pyasm-mode-map'
  ;; so we can define our own comment character.
  (use-local-map (nconc (make-sparse-keymap) pyasm-mode-map))
- (local-set-key (vector pyasm-comment-char) #'pyasm-comment)
  (set-syntax-table (make-syntax-table pyasm-mode-syntax-table))
  (modify-syntax-entry pyasm-comment-char "< b")
 
