@@ -107,7 +107,7 @@
      comment-region
      :help "Comment or uncomment each line in the region"]))
 
-(defvar pyasm-operators
+(defconst pyasm-operators
       '("ASYNC_GEN_WRAP"
         "BEFORE_ASYNC_WITH"
         "BEFORE_WITH"
