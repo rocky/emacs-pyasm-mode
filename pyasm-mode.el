@@ -525,7 +525,7 @@ Special commands:
       (skip-syntax-backward " ")
       (if (setq labelp (bolp))
           (delete-horizontal-space)))
-    (call-interactively 'self-insert-command)
+    (call-interactively #'self-insert-command)
     (when labelp
       (delete-horizontal-space)
       (tab-to-tab-stop))))
