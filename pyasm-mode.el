@@ -533,66 +533,6 @@ Special commands:
 (define-obsolete-function-alias
   'pyasm-newline #'newline-and-indent "27.1")
 
-(defun pyasm-comment ()
-  "Convert an empty comment to a `larger' kind, or start a new one.
-These are the known comment classes:
-
-   1 -- comment to the right of the code (at the `comment-column')
-   2 -- comment on its own line, indented like code
-   3 -- comment on its own line, beginning at the left-most column.
-
-Suggested usage:  while writing your code, trigger `pyasm-comment'
-repeatedly until you are satisfied with the kind of comment."
-  (interactive)
-  (comment-normalize-vars)
-  (let (comempty
-        comment)
-    (save-excursion
-      (beginning-of-line)
-      (setq comment (comment-search-forward (line-end-position) t)))
-      (setq comempty (looking-at "[ \t]*$")))
-
-    (cond
-
-     ;; Blank line?  Then start comment at code indent level.
-     ;; Just like `comment-dwim'.  -stef
-     ((save-excursion
-        (beginning-of-line)
-        (looking-at "^[ \t]*$"))
-      (indent-according-to-mode)
-      (insert pyasm-comment-char pyasm-comment-char ?\ ))
-
-     ;; Nonblank line without comment => start a comment at comment-column.
-     ;; Also: point before the comment => jump inside.
-     ((or (null comment) (< (point) comment))
-      (indent-for-comment))
-
-     ;; Flush-left or non-empty comment present => just insert character.
-     ((or (not comempty)
-          (save-excursion
-            (goto-char comment)
-            (bolp)))
-      (insert pyasm-comment-char))
-
-     ;; Empty code-level comment => upgrade to next comment level.
-     ((save-excursion
-        (goto-char comment)
-        (skip-chars-backward " \t")
-        (bolp))
-      (goto-char comment)
-      (insert pyasm-comment-char)
-      (indent-for-comment))
-
-     ;; Empty comment ends non-empty code line => new comment above.
-     (t
-      (goto-char comment)
-      (skip-chars-backward " \t")
-      (delete-region (point) (line-end-position))
-      (beginning-of-line)
-      (insert "\n")
-      (backward-char)
-      (pyasm-comment)))))
-
 ;; For a python-mode handling. Not working yet.
 ;; (mmm-add-classes
 ;;  '((pyasm-python-in-comment
