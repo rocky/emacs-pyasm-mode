@@ -31,14 +31,10 @@
 ;; dis, or from the pydisasm program of xdis.
 
 ;; It defines a private abbrev table that can be used to save abbrevs
-;; for assembler mnemonics.  It binds just five keys:
+;; for assembler mnemonics.  It binds just four keys:
 ;;
 ;;	TAB		tab to next tab stop
 ;;	:		outdent preceding label, tab to tab stop
-;;	comment char	place or move comment
-;;			`pyasm-comment-char' specifies which character this is;
-;;			you can use a different character in different
-;;			Asm mode buffers.
 ;;	C-j, C-m	newline and tab to tab stop
 ;;
 ;; Code is indented to the first tab stop level.
